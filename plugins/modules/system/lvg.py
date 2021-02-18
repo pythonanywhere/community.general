@@ -187,15 +187,7 @@ def main():
 
         # get pv list
         pvs_cmd = module.get_bin_path('pvs', True)
-        if dev_list:
-            pvs_filter_pv_name = ' || '.join(
-                'pv_name = {0}'.format(x)
-                for x in itertools.chain(dev_list, module.params['pvs'])
-            )
-            pvs_filter_vg_name = 'vg_name = {0}'.format(vg)
-            pvs_filter = "--select '{0} || {1}' ".format(pvs_filter_pv_name, pvs_filter_vg_name)
-        else:
-            pvs_filter = ''
+        pvs_filter = ''
         rc, current_pvs, err = module.run_command("%s --noheadings -o pv_name,vg_name --separator ';' %s" % (pvs_cmd, pvs_filter))
         if rc != 0:
             module.fail_json(msg="Failed executing pvs command.", rc=rc, err=err)
